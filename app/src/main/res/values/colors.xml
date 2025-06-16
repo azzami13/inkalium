@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="horn_bee">#FECB0F</color>
+    <color name="horn_bee_2">#FEC009</color>
+    <color name="pale">#F6F6F6</color>
+    <color name="jetblack">#000411</color>
+    <color name="black">#000000</color>
+    <color name="gray">#DEDEDE</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#FFFFC107</color>
+</resources>

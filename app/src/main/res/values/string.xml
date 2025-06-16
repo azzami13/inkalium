@@ -1,0 +1,7 @@
+<resources>
+    <string name="empty_email">Email harus diisi</string>
+    <string name="empty_password">Password harus diisi</string>
+    <string name="empty_both">Email dan password harus diisi</string>
+    <string name="login_failed">Login gagal</string>
+    <string name="network_error">Terjadi kesalahan jaringan</string>
+</resources>
