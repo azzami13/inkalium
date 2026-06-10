@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pencarian Makanan</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <h1>Cari Makanan</h1>
+    <form method="get" action="/web/food-search">
+        <input type="text" name="query" placeholder="Contoh: Nasi Goreng" required>
+        <button type="submit">Cari</button>
+    </form>
+
+    {% if results %}
+    <h2>Hasil:</h2>
+    <ul>
+        {% for item in results %}
+        <li>
+            <strong>{{ item.description }}</strong> <br/>
+            <form method="post" action="/web/log-food">
+                <input type="hidden" name="user_id" value="1"> <!-- Ganti dengan ID user -->
+                <input type="hidden" name="food_name" value="{{ item.description }}">
+                <input type="hidden" name="calories" value="{{ item.foodNutrients | selectattr('nutrientName', 'equalto', 'Energy') | map(attribute='value') | list | first | default(0) }}">
+                <input type="hidden" name="protein" value="{{ item.foodNutrients | selectattr('nutrientName', 'equalto', 'Protein') | map(attribute='value') | list | first | default(0) }}">
+                <input type="hidden" name="fat" value="{{ item.foodNutrients | selectattr('nutrientName', 'equalto', 'Total lipid (fat)') | map(attribute='value') | list | first | default(0) }}">
+                <input type="hidden" name="carbs" value="{{ item.foodNutrients | selectattr('nutrientName', 'equalto', 'Carbohydrate, by difference') | map(attribute='value') | list | first | default(0) }}">
+                <label>Jumlah (gram): <input type="number" name="amount_grams" step="1" min="1" value="100" required></label>
+                <button type="submit">Simpan</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Kalium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+        <p>Selamat datang, {{ user.email }}</p>
+
+        {% if user.profile_picture %}
+            <div class="mt-4 text-center">
+                <img src="{{ url_for('static', path='uploads/' + user.profile_picture) }}" 
+                     alt="Foto Profil" 
+                     class="w-24 h-24 rounded-full object-cover border mx-auto">
+            </div>
+        {% endif %}
+
+        <form action="/upload-photo" method="post" enctype="multipart/form-data" class="mt-6">
+            <label class="block mb-2 font-medium">Upload Foto Profil:</label>
+            <input type="file" name="file" accept="image/*" class="w-full p-2 border rounded mb-2" required>
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Upload</button>
+        </form>
+
+        <form action="/update-profile" method="post" class="mt-6 space-y-4">
+            <div>
+                <label class="block font-medium">Umur:</label>
+                <input type="number" name="umur" value="{{ user.umur or '' }}" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label class="block font-medium">Jenis Kelamin:</label>
+                <select name="jenis_kelamin" class="w-full p-2 border rounded" required>
+                    <option value="Laki-laki" {% if user.jenis_kelamin == 'Laki-laki' %}selected{% endif %}>Laki-laki</option>
+                    <option value="Perempuan" {% if user.jenis_kelamin == 'Perempuan' %}selected{% endif %}>Perempuan</option>
+                </select>
+            </div>
+            <div>
+                <label class="block font-medium">Berat Badan (kg):</label>
+                <input type="number" name="berat_badan" step="0.1" value="{{ user.berat_badan or '' }}" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label class="block font-medium">Tinggi Badan (cm):</label>
+                <input type="number" name="tinggi_badan" step="0.1" value="{{ user.tinggi_badan or '' }}" class="w-full p-2 border rounded" required>
+            </div>
+            <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">Simpan Profil</button>
+        </form>
+
+        <!-- 🔹 Tombol ke halaman pencarian makanan -->
+        <div class="mt-6 text-center">
+            <a href="/web/food-search" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded">
+                Cari & Tambah Makanan
+            </a>
+        </div>
+
+        <div class="mt-6 text-center">
+            <a class="text-red-500 hover:underline" href="/auth/login">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

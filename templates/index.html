@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalium - Asupan Kesehatan Tubuh</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo-container">
+                <div class="logo">K<span class="plus">+</span></div>
+            </div>
+            <div class="nav-links">
+                <a href="#tentang">Tentang</a>
+                <a href="#fitur">Fitur</a>
+                <a href="#kontak">Kontak</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="/auth/login" class="login-btn">Masuk</a>
+                <a href="/auth/register" class="register-btn">Daftar</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>KALIUM<span class="plus">+</span></h1>
+                <h2>Solusi Kesehatan Tubuh Anda</h2>
+                <p>Pantau asupan nutrisi, air, dan aktivitas fisik Anda untuk hidup lebih sehat setiap hari</p>
+                <div class="hero-buttons">
+                    <a href="/auth/register" class="cta-button">Mulai Sekarang</a>
+                    <a href="#tentang" class="learn-more">Pelajari Lebih Lanjut</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="health-illustration">
+                    <div class="water-animation">
+                        <i class="fas fa-tint"></i>
+                        <div class="ripple"></div>
+                    </div>
+                    <div class="nutrition-animation">
+                        <i class="fas fa-apple-alt"></i>
+                        <div class="pulse"></div>
+                    </div>
+                    <div class="exercise-animation">
+                        <i class="fas fa-running"></i>
+                        <div class="heartbeat"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tentang" class="about">
+            <h2>Tentang Kalium<span class="plus">+</span></h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Kalium+ adalah aplikasi kesehatan komprehensif yang dirancang untuk membantu Anda memantau asupan nutrisi, kebutuhan air, dan aktivitas fisik. Kami menggunakan pendekatan berbasis ilmiah untuk memberikan rekomendasi yang sesuai dengan kebutuhan tubuh Anda.</p>
+                    <p>Dengan Kalium+, Anda dapat dengan mudah mencatat konsumsi harian, mendapatkan analisis keseimbangan nutrisi, dan menerima pengingat untuk hidrasi yang cukup serta aktivitas fisik yang tepat.</p>
+                </div>
+                <div class="about-image">
+                    <div class="k-logo">
+                        <span>K</span><span class="plus">+</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fitur" class="features">
+            <h2>Fitur Utama</h2>
+            <div class="feature-cards">
+                <div class="feature-card water">
+                    <div class="icon-container">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3>Hidrasi</h3>
+                    <p>Pantau asupan air Anda dan dapatkan pengingat untuk minum air secara teratur berdasarkan kebutuhan pribadi.</p>
+                </div>
+                <div class="feature-card nutrition">
+                    <div class="icon-container">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h3>Nutrisi</h3>
+                    <p>Lacak asupan nutrisi dan kalori harian Anda dengan database makanan yang komprehensif.</p>
+                </div>
+                <div class="feature-card exercise">
+                    <div class="icon-container">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h3>Aktivitas Fisik</h3>
+                    <p>Catat aktivitas fisik Anda dan terima rekomendasi olahraga yang sesuai dengan gaya hidup Anda.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="cta-content">
+                <h2>Mulai Perjalanan Kesehatan Anda Hari Ini</h2>
+                <p>Bergabunglah dengan ribuan orang yang telah merasakan manfaat dari Kalium+</p>
+                <a href="/auth/register" class="cta-button">Daftar Sekarang</a>
+            </div>
+        </section>
+
+        <section id="kontak" class="contact">
+            <h2>Hubungi Kami</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>info@kaliumplus.id</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+62 812 3456 7890</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Jl. Raya Kalium No. 123, Jakarta</p>
+                    </div>
+                </div>
+                <div class="social-media">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo">K<span class="plus">+</span></div>
+                <p>Kalium+ © 2025. All Rights Reserved.</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Syarat & Ketentuan</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu functionality
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('.nav-links').classList.toggle('active');
+            document.querySelector('.auth-buttons').classList.toggle('active');
+        });
+
+        // Logo animation
+        gsap.to(".logo .plus", {
+            rotation: 360,
+            duration: 4,
+            repeat: -1,
+            ease: "power1.inOut"
+        });
+
+        // Water animation
+        gsap.to(".water-animation .ripple", {
+            scale: 2,
+            opacity: 0,
+            duration: 2,
+            repeat: -1,
+            ease: "power1.out"
+        });
+
+        // Nutrition animation
+        gsap.to(".nutrition-animation .pulse", {
+            scale: 1.5,
+            opacity: 0,
+            duration: 1.5,
+            repeat: -1,
+            ease: "power1.inOut"
+        });
+
+        // Exercise animation
+        gsap.to(".exercise-animation .heartbeat", {
+            scale: 1.3,
+            duration: 0.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut"
+        });
+
+        // Scroll animations
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < window.innerHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
