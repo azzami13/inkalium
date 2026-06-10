@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
 from database.database import Base, engine
+from database.schema_guard import ensure_runtime_schema
 from models.user import User
 from models.water_intake import WaterIntake
 from models.daily_water_summary import DailyWaterSummary
@@ -40,6 +41,7 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 # Create all tables in the database
 Base.metadata.create_all(bind=engine)
+ensure_runtime_schema(engine)
 
 app.include_router(auth_route)
 app.include_router(dashboard_route)

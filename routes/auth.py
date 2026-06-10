@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
@@ -11,6 +12,7 @@ from schemas.login_request import GoogleSignInRequest
 from google.oauth2 import id_token
 from google.auth.transport import requests
 import os
+import re
 from dotenv import load_dotenv
 from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
@@ -36,6 +38,18 @@ class AuthResponse(BaseModel):
     message: str
     token: str | None = None
 
+def build_unique_username(db: Session, email: str, requested_username: str | None = None) -> str:
+    base_username = requested_username or email.split("@")[0]
+    base_username = re.sub(r"[^a-zA-Z0-9_]", "_", base_username).strip("_") or "user"
+    username = base_username
+    suffix = 1
+
+    while db.query(User).filter(User.username == username).first():
+        suffix += 1
+        username = f"{base_username}_{suffix}"
+
+    return username
+
 # Endpoint untuk registrasi
 @router.post("/register", response_model=AuthResponse)
 async def register(
@@ -45,23 +59,31 @@ async def register(
     if db.query(User).filter(User.email == user_data.email).first():
         raise HTTPException(status_code=400, detail="Email sudah terdaftar!")
 
-    hashed_password = pwd_context.hash(user_data.password)
+    try:
+        hashed_password = pwd_context.hash(user_data.password)
+        username = build_unique_username(db, user_data.email, user_data.username)
 
-    new_user = User(
-        email=user_data.email,
-        hashed_password=hashed_password,
-        last_login=None,
-        login_count=0,
-        role="user",
-        username=user_data.username or user_data.email.split("@")[0],
-        umur=user_data.umur,
-        jenis_kelamin=user_data.jenis_kelamin,
-        berat_badan=user_data.berat_badan,
-        tinggi_badan=user_data.tinggi_badan
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+        new_user = User(
+            email=user_data.email,
+            hashed_password=hashed_password,
+            last_login=None,
+            login_count=0,
+            role="user",
+            username=username,
+            umur=user_data.umur,
+            jenis_kelamin=user_data.jenis_kelamin,
+            berat_badan=user_data.berat_badan,
+            tinggi_badan=user_data.tinggi_badan
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Email atau username sudah terdaftar!")
+    except SQLAlchemyError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Gagal menyimpan user baru")
 
     token = create_access_token({"sub": new_user.email, "role": new_user.role})
     return AuthResponse(success=True, message="Registrasi berhasil! Silakan login.", token=token)
