@@ -1,7 +1,7 @@
 fastapi
 uvicorn[standard]
 gunicorn
-bcrypt
+bcrypt==4.0.1
 passlib[bcrypt]
 python-jose
 PyJWT
