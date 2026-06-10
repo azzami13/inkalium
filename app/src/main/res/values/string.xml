@@ -4,4 +4,5 @@
     <string name="empty_both">Email dan password harus diisi</string>
     <string name="login_failed">Login gagal</string>
     <string name="network_error">Terjadi kesalahan jaringan</string>
+    <string name="google_maps_key">YOUR_GOOGLE_MAPS_API_KEY</string>
 </resources>

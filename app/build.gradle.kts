@@ -110,6 +110,9 @@ dependencies {
 
     // Google services
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.google.maps.android:maps-compose:6.1.0")
 
     // Animation
     implementation("com.airbnb.android:lottie:6.6.6")

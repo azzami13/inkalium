@@ -11,6 +11,9 @@
     <uses-permission-sdk-23 android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".KaliumApp"
@@ -23,6 +26,10 @@
         android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -33,6 +40,10 @@
             </intent-filter>
         </activity>
         <service android:name=".utils.StepTrackingService" android:exported="false" />
+        <service
+            android:name=".utils.ActivityTrackingService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
 
         <activity android:name=".MainActivity" android:exported="true"/>
 

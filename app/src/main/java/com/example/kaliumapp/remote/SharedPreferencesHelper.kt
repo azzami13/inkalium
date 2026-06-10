@@ -15,13 +15,21 @@ object SharedPreferencesHelper {
     private const val KEY_IS_NEW_USER = "is_new_user"
     private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
     private const val KEY_LAST_SYNC_DATE = "last_sync_date"
+    private const val KEY_LAST_LOGIN_AT = "last_login_at"
+    private const val KEY_LAST_SESSION_ACCESS_AT = "last_session_access_at"
+    private const val SESSION_VALIDITY_MILLIS = 30L * 24 * 60 * 60 * 1000
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
     fun saveToken(context: Context, token: String) {
-        getPreferences(context).edit().putString(KEY_TOKEN, token).apply()
+        val now = System.currentTimeMillis()
+        getPreferences(context).edit()
+            .putString(KEY_TOKEN, token)
+            .putLong(KEY_LAST_LOGIN_AT, now)
+            .putLong(KEY_LAST_SESSION_ACCESS_AT, now)
+            .apply()
         Log.d("SharedPreferencesHelper", "Token saved")
     }
 
@@ -30,7 +38,11 @@ object SharedPreferencesHelper {
     }
 
     fun clearToken(context: Context) {
-        getPreferences(context).edit().remove(KEY_TOKEN).apply()
+        getPreferences(context).edit()
+            .remove(KEY_TOKEN)
+            .remove(KEY_LAST_LOGIN_AT)
+            .remove(KEY_LAST_SESSION_ACCESS_AT)
+            .apply()
         Log.d("SharedPreferencesHelper", "Token cleared")
     }
 
@@ -56,7 +68,24 @@ object SharedPreferencesHelper {
     }
 
     fun isLoggedIn(context: Context): Boolean {
-        return getToken(context) != null
+        return isValidSession(context)
+    }
+
+    fun markSessionAccessed(context: Context) {
+        if (!getToken(context).isNullOrEmpty()) {
+            getPreferences(context).edit()
+                .putLong(KEY_LAST_SESSION_ACCESS_AT, System.currentTimeMillis())
+                .apply()
+        }
+    }
+
+    fun isSessionExpired(context: Context): Boolean {
+        val lastAccess = getPreferences(context).getLong(KEY_LAST_SESSION_ACCESS_AT, 0L)
+        if (lastAccess == 0L) return false
+
+        val expired = System.currentTimeMillis() - lastAccess > SESSION_VALIDITY_MILLIS
+        Log.d("SharedPreferencesHelper", "Session expired: $expired")
+        return expired
     }
 
     fun setNewUser(context: Context, isNew: Boolean) {
@@ -115,6 +144,8 @@ object SharedPreferencesHelper {
             editor.remove(KEY_USER_ID)
             editor.remove(KEY_IS_NEW_USER)
             editor.remove(KEY_LAST_SYNC_DATE)
+            editor.remove(KEY_LAST_LOGIN_AT)
+            editor.remove(KEY_LAST_SESSION_ACCESS_AT)
             editor.apply()
             Log.d("SharedPreferencesHelper", "Session data cleared successfully")
         } catch (e: Exception) {
@@ -144,11 +175,10 @@ object SharedPreferencesHelper {
      */
     fun isValidSession(context: Context): Boolean {
         val token = getToken(context)
-        val userId = getUserId(context)
-        val email = getEmail(context)
 
-        val isValid = !token.isNullOrEmpty() && userId > 0 && !email.isNullOrEmpty()
-        Log.d("SharedPreferencesHelper", "Session validation: $isValid (token=${!token.isNullOrEmpty()}, userId=$userId, email=${!email.isNullOrEmpty()})")
+        val hasToken = !token.isNullOrEmpty()
+        val isValid = hasToken && !isSessionExpired(context)
+        Log.d("SharedPreferencesHelper", "Session validation: $isValid (token=$hasToken)")
 
         return isValid
     }

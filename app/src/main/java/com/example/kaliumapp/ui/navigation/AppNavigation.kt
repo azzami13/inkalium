@@ -9,7 +9,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
-import com.example.kaliumapp.data.repository.UserRepository
 import com.example.kaliumapp.remote.SharedPreferencesHelper
 import com.example.kaliumapp.ui.DashboardScreen
 import com.example.kaliumapp.ui.auth.AuthScreen
@@ -21,9 +20,6 @@ import com.example.kaliumapp.ui.screens.HitungKaloriScreen
 import com.example.kaliumapp.ui.screens.ProfileScreen
 import com.example.kaliumapp.ui.screens.WaterIntakeScreen
 import com.example.kaliumapp.viewmodel.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
@@ -46,37 +42,15 @@ sealed class Screen(val route: String) {
 @Composable
 fun AppNavigation(
     context: Context,
-    startDestination: String,
-    userRepository: UserRepository
+    startDestination: String
 ) {
     val navController = rememberNavController()
-    val coroutineScope = rememberCoroutineScope()
-
-    var isLoaded by remember { mutableStateOf(false) }
-    var currentStartDestination by remember { mutableStateOf(startDestination) }
 
     LaunchedEffect(Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
-            val token = SharedPreferencesHelper.getToken(context)
-            val isValid = if (token != null) {
-                userRepository.validateToken(token)
-            } else {
-                false
-            }
-
-            withContext(Dispatchers.Main) {
-                currentStartDestination = when {
-                    !isValid -> Screen.Login.route
-                    SharedPreferencesHelper.isNewUser(context) -> Screen.Onboarding.route
-                    !SharedPreferencesHelper.isOnboardingCompleted(context) -> Screen.Onboarding.route
-                    else -> Screen.Dashboard.route
-                }
-                isLoaded = true
-            }
+        if (SharedPreferencesHelper.isValidSession(context)) {
+            SharedPreferencesHelper.markSessionAccessed(context)
         }
     }
-
-    if (!isLoaded) return
 
     Scaffold(
         bottomBar = {
@@ -95,7 +69,7 @@ fun AppNavigation(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = currentStartDestination,
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Login.route) {
