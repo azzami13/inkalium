@@ -41,7 +41,7 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
     if not db_user:
         logger.warning("Pengguna tidak ditemukan untuk email: %s", email)
         return RedirectResponse(url="/auth/login")
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user": db_user})
+    return templates.TemplateResponse(request, "dashboard.html", {"user": db_user})
 
 @router.post("/upload-photo")
 async def upload_photo(request: Request, file: UploadFile = File(...), db: Session = Depends(get_db)):

@@ -16,22 +16,22 @@ USDA_API_KEY = os.getenv("USDA_API_KEY")  # Tambahkan ini ke .env
 # 🔹 GET: Halaman Utama (Landing Page)
 @router.get("/", response_class=HTMLResponse)
 def index_page(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 # 🔹 GET: Halaman Login
 @router.get("/auth/login", response_class=HTMLResponse)
 def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request, "login.html")
 
 # 🔹 GET: Halaman Register
 @router.get("/auth/register", response_class=HTMLResponse)
 def register_page(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse(request, "register.html")
 
 # 🔹 GET: Halaman Dashboard
 @router.get("/dashboard", response_class=HTMLResponse)
 def dashboard_page(request: Request):
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse(request, "dashboard.html")
 
 # 🔹 GET: Halaman Pencarian Makanan
 @router.get("/web/food-search", response_class=HTMLResponse)
@@ -43,7 +43,7 @@ async def food_search(request: Request, query: str = None):
         response = requests.get(url, params=params)
         if response.status_code == 200:
             results = response.json().get("foods", [])
-    return templates.TemplateResponse("food_search.html", {"request": request, "results": results})
+    return templates.TemplateResponse(request, "food_search.html", {"results": results})
 
 # 🔹 POST: Simpan Makanan ke Database
 @router.post("/web/log-food")
@@ -80,4 +80,4 @@ async def food_search(request: Request, query: str = None):
         response = requests.get(url, params=params)
         if response.status_code == 200:
             results = response.json().get("foods", [])
-    return templates.TemplateResponse("food_search.html", {"request": request, "results": results})
+    return templates.TemplateResponse(request, "food_search.html", {"results": results})
